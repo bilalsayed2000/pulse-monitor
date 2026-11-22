@@ -357,8 +357,8 @@
   }
 
   // ---------- Events ----------
-  $('tabFinger').onclick = () => setMode('finger');
-  $('tabFace').onclick = () => setMode('face');
+  $('tabFinger').onclick = () => setMode('m');
+  $('tabFace').onclick = () => setMode('m');
   $('start').onclick = start;
   $('stop').onclick = stopAll;
   $('clear').onclick = () => { history = []; try { localStorage.removeItem('pulseHistory'); } catch (e) {} renderHistory(); };
@@ -370,7 +370,44 @@
   };
 
   renderHistory();
-  setMode('finger');
+  //setMode('finger');
+
+
+function setMode(m) {
+
+    if (running) return;
+
+    mode = m;
+
+    $('tabFinger').classList.toggle(
+        'on',
+        m === 'finger'
+    );
+
+    $('tabFace').classList.toggle(
+        'on',
+        m === 'face'
+    );
+
+    if (m === 'finger') {
+
+        roi.style.cssText =
+            'left:25%;top:25%;width:50%;height:50%';
+
+        $('hint').textContent =
+            'Place your fingertip over the rear camera and flash. Keep still.';
+
+    } else {
+
+        roi.style.cssText =
+            'left:35%;top:12%;width:30%;height:22%';
+
+        $('hint').textContent =
+            'Face the front camera in bright, steady lighting. Keep your forehead inside the green box.';
+    }
+
+}
+
 
   // Release camera hardware if the page is closed or navigated away from.
   window.addEventListener('pagehide', stopAll);
